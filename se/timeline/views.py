@@ -50,9 +50,8 @@ class CourseRecommendAPI(APIView):
     7. 포함시킬 교양 과목: id array/ge_list
     '''
     def post(self, request):
-        
+    
         data = request.data
-
         major = data['major']
         grade = data['grade']
         max_credit = data['max_credit']
@@ -79,7 +78,8 @@ class CourseRecommendAPI(APIView):
                 'id': m.id,
                 'name': m.name,
                 'session': tmp,
-                'place': m.place
+                'place': m.place,
+                'credit': m.credit,
             }
 
         for g in ge_course:
@@ -89,10 +89,47 @@ class CourseRecommendAPI(APIView):
                 'id': g.id,
                 'name': g.name,
                 'session': tmp,
-                'place': g.place
+                'place': g.place,
+                'credit': g.credit,
             }
-            
-        return Response(data)
+
+        recommends = get_recommmend(major, ge, max_credit, min_credit, min_major_credit)
+
+        return Response(recommends)
+
+def get_recommmend(major, ge, max_credit, min_credit, min_major_credit):
+
+    major_c = []
+    major_check = {key: False for key,val in major.items()}
+    major_dfs(major_check, list(major.values()), 0, 0, max_credit, min_credit, min_major_credit, major_c)
+
+    ret = []
+
+    return major_c
+
+
+def major_dfs(check, major, now_place, credits, max_credit, min_credit, min_major_credit, major_c):
+
+    if credits >= min_major_credit and credits <= max_credit:
+        tmp = [key for key,val in check.items() if val == True]
+        major_c.append(tmp)
+    
+    if len(major) < now_place: return
+    
+    for i in range(now_place, len(major)):
+        
+        course = major[i]
+        if credits + course['credit'] > max_credit: continue
+        
+        check[course['id']] = True
+        major_dfs(check, major, i + 1, credits + course['credit'], max_credit, min_credit, min_major_credit, major_c)
+        check[course['id']] = False
+        
+
+def ge_dfs(check, ge, now_place, credits, max_credit, min_credit, ge_c):
+    print("in dfs")
+
+
 
 def make_time(string):
     tmp = string.classTime.split(')')[:-1]
