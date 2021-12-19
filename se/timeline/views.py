@@ -57,8 +57,36 @@ class CourseRecommendAPI(APIView):
         max_credit = data['max_credit']
         min_credit = data['min_credit']
         min_major_credit = data['min_major_credit']
-        major_list = data['major_list']
-        ge_list = data['ge_list']
+        major_list = data['major_list'] #id list
+        ge_list = data['ge_list'] #id list
+
+        credits = 0
+        major_credits = 0
+        must = []
+        # major_list 처리
+        for id in major_list:
+            tmp = Course.objects.filter(Q(id = id))[0]
+            must.append({
+                'id' : tmp.id,
+                'name' : tmp.name,
+                'session' : make_time(tmp),
+                'place' : tmp.place,
+                'credit' : tmp.credit,
+            })
+            major_credits += tmp.credit
+            credits += tmp.credit
+
+        # ge_list 처리
+        for id in ge_list:
+            tmp = Course.objects.filter(Q(id = id))[0]
+            must.append({
+                'id' : tmp.id,
+                'name' : tmp.name,
+                'session' : make_time(tmp),
+                'place' : tmp.place,
+                'credit' : tmp.credit,
+            })
+            credits += m.credit
 
         major_course = Course.objects.filter(
             Q(major = major) & Q(grade = grade)
@@ -69,7 +97,6 @@ class CourseRecommendAPI(APIView):
         )
 
         major = {}
-        ge = {}
 
         for m in major_course:
             if "시간미지정강좌" in m.classTime: continue
@@ -82,36 +109,32 @@ class CourseRecommendAPI(APIView):
                 'credit': m.credit,
             }
 
-        for g in ge_course:
-            if "시간미지정강좌" in g.classTime: continue
-            tmp = make_time(g)
-            ge[g.id] = {
-                'id': g.id,
-                'name': g.name,
-                'session': tmp,
-                'place': g.place,
-                'credit': g.credit,
-            }
-
-        recommends = get_recommmend(major, ge, max_credit, min_credit, min_major_credit)
+        recommends = get_recommmend(major, max_credit, min_credit, min_major_credit, must, major_credits, credits)
 
         return Response(recommends)
 
-def get_recommmend(major, ge, max_credit, min_credit, min_major_credit):
+def get_recommmend(major, max_credit, min_credit, min_major_credit, must, major_credits, credits):
 
     major_c = []
-    major_check = {key: False for key,val in major.items()}
-    major_dfs(major_check, list(major.values()), 0, 0, max_credit, min_credit, min_major_credit, major_c)
-
-    ret = []
+    major_check = [False for key,val in major.items()]
+    
+    mmm = list(major.values())
+    tmp = [x['id'] for x in must]
+    for i in range(len(mmm)):
+        if mmm[i]['id'] in tmp: major_check[i] = True
+    
+    major_dfs(major_check, list(major.values()), 0, credits, major_credits, max_credit, min_credit, min_major_credit, major_c, must)
 
     return major_c
 
 
-def major_dfs(check, major, now_place, credits, max_credit, min_credit, min_major_credit, major_c):
+def major_dfs(check, major, now_place, credits, major_credits, max_credit, min_credit, min_major_credit, major_c, must):
 
-    if credits >= min_major_credit and credits <= max_credit:
-        tmp = [key for key,val in check.items() if val == True]
+    if len(major_c) >= 3: return
+
+    if credits >= min_credit and credits <= max_credit and major_credits >= min_major_credit:
+        tmp = [major[i] for i in range(len(check)) if check[i] == True]
+        #for x in must: tmp.append(x)
         major_c.append(tmp)
     
     if len(major) < now_place: return
@@ -120,10 +143,32 @@ def major_dfs(check, major, now_place, credits, max_credit, min_credit, min_majo
         
         course = major[i]
         if credits + course['credit'] > max_credit: continue
+
+        overlap = False
+
+        for j in range(len(check)):
+            if check[j] == False: continue
+            if major[j]['name'] == course['name']:
+                overlap = True
+                break
+
+            for t in major[j]['session']:
+                for tt in course['session']:
+                    if t[0] != tt[0]: continue
+                    if tt[1][0] < t[1][0] and tt[1][1] < t[1][0]: continue
+                    if tt[1][0] > t[1][1] and tt[1][1] > t[1][1]: continue
+                    overlap = True
+                    break
+            if overlap == True: break
+
+        for mu in must:
+            print(mu)
+                
+        if overlap == True: continue
         
-        check[course['id']] = True
-        major_dfs(check, major, i + 1, credits + course['credit'], max_credit, min_credit, min_major_credit, major_c)
-        check[course['id']] = False
+        check[i] = True
+        major_dfs(check, major, i + 1, credits + course['credit'], major_credits + course['credit'], max_credit, min_credit, min_major_credit, major_c, must)
+        check[i] = False
         
 
 def ge_dfs(check, ge, now_place, credits, max_credit, min_credit, ge_c):
