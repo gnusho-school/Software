@@ -1,0 +1,44 @@
+x.sh: 1: python: not found
+Watching for file changes with StatReloader
+[19/Dec/2021 01:39:38] "GET /timeline/?major=%EC%84%9C%EC%9A%B8%20%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5%EB%8C%80%ED%95%99%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%ED%95%99%EA%B3%BC%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5&name=%EC%9D%B8%EB%AC%B8%ED%81%B4%EB%9E%98 HTTP/1.1" 200 670
+/home/ubuntu/Software-Engineering-Project/se/timeline/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 19, 2021 - 01:39:15
+Django version 4.0, using settings 'se.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+서울 융합전공대학 고전읽기융합학과 고전읽기융합전공
+Watching for file changes with StatReloader
+/home/ubuntu/Software-Engineering-Project/se/timeline/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 19, 2021 - 01:43:47
+Django version 4.0, using settings 'se.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader
+[19/Dec/2021 01:46:13] "GET /timeline/?major=%EC%84%9C%EC%9A%B8%20%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5%EB%8C%80%ED%95%99%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%ED%95%99%EA%B3%BC%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5&name=%EC%9D%B8%EB%AC%B8%ED%81%B4%EB%9E%98&grade=1 HTTP/1.1" 200 2
+[19/Dec/2021 01:46:22] "GET /timeline/?major=%EC%84%9C%EC%9A%B8%20%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5%EB%8C%80%ED%95%99%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%ED%95%99%EA%B3%BC%20%EA%B3%A0%EC%A0%84%EC%9D%BD%EA%B8%B0%EC%9C%B5%ED%95%A9%EC%A0%84%EA%B3%B5&name=%EC%9D%B8%EB%AC%B8%ED%81%B4%EB%9E%98 HTTP/1.1" 200 670
+/home/ubuntu/Software-Engineering-Project/se/timeline/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 19, 2021 - 01:44:16
+Django version 4.0, using settings 'se.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+서울 융합전공대학 고전읽기융합학과 고전읽기융합전공
+서울 융합전공대학 고전읽기융합학과 고전읽기융합전공
+Watching for file changes with StatReloader
+/home/ubuntu/Software-Engineering-Project/se/timeline/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+December 19, 2021 - 02:10:24
+Django version 4.0, using settings 'se.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+Watching for file changes with StatReloader

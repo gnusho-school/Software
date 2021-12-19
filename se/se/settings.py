@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'timeline',
+
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
