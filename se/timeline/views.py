@@ -52,6 +52,7 @@ class CourseRecommendAPI(APIView):
     def post(self, request):
     
         data = request.data
+        print(data)
         major = data['major']
         grade = data['grade']
         max_credit = data['max_credit']
@@ -123,6 +124,7 @@ def get_recommmend(major, max_credit, min_credit, min_major_credit, must, major_
     for i in range(len(mmm)):
         if mmm[i]['id'] in tmp: major_check[i] = True
     
+    print(credits)
     major_dfs(major_check, list(major.values()), 0, credits, major_credits, max_credit, min_credit, min_major_credit, major_c, must)
 
     return major_c
@@ -131,7 +133,7 @@ def get_recommmend(major, max_credit, min_credit, min_major_credit, must, major_
 def major_dfs(check, major, now_place, credits, major_credits, max_credit, min_credit, min_major_credit, major_c, must):
 
     if len(major_c) >= 3: return
-
+    print(type(min_credit))
     if credits >= min_credit and credits <= max_credit and major_credits >= min_major_credit:
         tmp = [major[i] for i in range(len(check)) if check[i] == True]
         #for x in must: tmp.append(x)
@@ -160,9 +162,6 @@ def major_dfs(check, major, now_place, credits, major_credits, max_credit, min_c
                     overlap = True
                     break
             if overlap == True: break
-
-        for mu in must:
-            print(mu)
                 
         if overlap == True: continue
         
